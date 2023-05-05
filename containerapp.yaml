@@ -1,0 +1,50 @@
+location: eastus
+name: mycontainerapp
+resourceGroup: myresourcegroup
+type: Microsoft.App/containerApps
+properties:
+  managedEnvironmentId: /subscriptions/mysubscription/resourceGroups/myresourcegroup/providers/Microsoft.App/managedEnvironments/myenvironment
+  configuration:
+    activeRevisionsMode: Single
+    dapr: null
+    ingress:
+      external: true
+      allowInsecure: false
+      targetPort: 8080
+      traffic:
+        - latestRevision: true
+          weight: 100
+      transport: Auto
+    registries: null
+    secrets: null
+    service: null
+  template:
+    revisionSuffix: ''
+    containers:
+      - image: docker.io/bitnami/drupal-nginx:8-debian-10
+        name: drupal
+        env:
+        - name: DRUPAL_DATABASE_NAME
+          value: bitnami_drupal
+        - name: DRUPAL_DATABASE_PASSWORD
+          value: Allahis1!
+        - name: DRUPAL_DATABASE_USER
+          value: myAdmin
+        - name: DRUPAL_DATABASE_PORT_NUMBER
+          value: '3306'
+        - name: DRUPAL_DATABASE_HOST
+          value: drupal-db-ahmedbham.mariadb.database.azure.com
+        resources:
+          cpu: 2
+          ephemeralStorage: 8Gi
+          memory: 4Gi
+        volumeMounts:
+        - mountPath: /bitnami/drupal
+          volumeName: mystoragemount
+    volumes:
+    - name: mystoragemount
+      storageName: mystoragemount
+      storageType: AzureFile
+    scale:
+      minReplicas: 1
+      maxReplicas: 1
