@@ -6,13 +6,13 @@ Install the latest version of the [Azure CLI](https://docs.microsoft.com/en-us/c
 
 ### Set up the environment
 
-1. Sign in to the Azure CLI.
+* Sign in to the Azure CLI.
 
 ```bash
 az login
 ```
 
-1. Set up environment variables used in various commands to follow.
+* Set up environment variables used in various commands to follow.
 
 ```bash
 export RESOURCE_GROUP="my-drupal-apps-group"
@@ -20,19 +20,19 @@ export ENVIRONMENT_NAME="my-drupal-storage-environment"
 export LOCATION="eastus"
 ```
 
-1. Ensure you have the latest version of the Container Apps Azure CLI extension.
+* Ensure you have the latest version of the Container Apps Azure CLI extension.
 
 ```bash
 az extension add -n containerapp --upgrade
 ```
 
-1. Register the Microsoft.App namespace.
+* Register the Microsoft.App namespace.
 
 ```bash
 az provider register -n Microsoft.App
 ```
 
-1. Register the Microsoft.OperationalInsights provider for the Azure Monitor Log Analytics workspace if you haven't used it before.
+* Register the Microsoft.OperationalInsights provider for the Azure Monitor Log Analytics workspace if you haven't used it before.
 
 ```bash
 az provider register -n Microsoft.OperationalInsights
@@ -40,7 +40,7 @@ az provider register -n Microsoft.OperationalInsights
 
 ### Create a Container Apps environment
 
-1. Create a resource group.
+* Create a resource group.
 
 ```bash
 az group create \
@@ -49,7 +49,7 @@ az group create \
   --query "properties.provisioningState"
 ```
 
-2. Create a Container Apps environment.
+* Create a Container Apps environment.
 
 ```bash
 az containerapp env create \
@@ -71,7 +71,7 @@ echo $ENVIRONMENT_ID
 
 ### Set up a storage account
 
-1. Define a storage account name.
+* Define a storage account name.
 
 ```bash
 RAND=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10 ; echo '')
@@ -80,7 +80,7 @@ STORAGE_ACCOUNT_NAME="mydrupalstorage$RAND"
 echo "Storage account name is" $STORAGE_ACCOUNT_NAME
 ```
 
-1. Create an Azure Storage account.
+* Create an Azure Storage account.
 
 ```bash
 az storage account create \
@@ -93,20 +93,20 @@ az storage account create \
   --query provisioningState
 ```
 
-1. Define a file share name.
+* Define a file share name.
 
 ```bash
 FILE_SHARE_NAME="mydrupalfileshare"
 ```
 
-1. Create a file share.
+* Create a file share.
 
 ```bash
 az storage share create --name $FILE_SHARE_NAME \
     --account-name $STORAGE_ACCOUNT_NAME --only-show-errors --output table
 ```
 
-1. Get the storage account key.
+* Get the storage account key.
 
 ```bash
 STORAGE_ACCOUNT_KEY=$(az storage account keys list \
@@ -116,13 +116,13 @@ STORAGE_ACCOUNT_KEY=$(az storage account keys list \
   --output tsv)
 ```
 
-1. Define the storage mount name.
+* Define the storage mount name.
 
 ```bash
 export STORAGE_MOUNT_NAME="mydrupalstoragemount"
 ```
 
-1. Create a storage mount.
+* Create a storage mount.
 
 ```bash
 az containerapp env storage set \
@@ -138,7 +138,7 @@ az containerapp env storage set \
 
 ### Create “Azure Database for MariaDB Servers” and a database instance
 
-1. Drupal DB Settings
+* Drupal DB Settings
 
 ```bash
 export DB_SERVER_NAME=drupal-db-srv-$RAND  # Must be globally unique, ie: 'drupal-db-srv-<unique>'
@@ -149,7 +149,7 @@ export DRUPAL_DB_PASSWORD=Zx3$RAND # Must include uppercase, lowercase, and nume
 export DRUPAL_DB_NAME=drupal_db
 ```
 
-1. Create a MariaDB Server
+* Create a MariaDB Server
 
 ```bash
 az mariadb server create --name $DB_SERVER_NAME \
@@ -159,7 +159,7 @@ az mariadb server create --name $DB_SERVER_NAME \
     --admin-password $DRUPAL_DB_PASSWORD --output none
 ```
 
-1. Enable Azure services (ie: Web App) to connect to the server.
+* Enable Azure services (ie: Web App) to connect to the server.
 
 ```bash
 az mariadb server firewall-rule create --name AllowAllWindowsAzureIps \
@@ -167,7 +167,7 @@ az mariadb server firewall-rule create --name AllowAllWindowsAzureIps \
     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0 --output none
 ```
 
-1. Create a blank DB for Drupal (Drupal's initialization process expects it to already exist and be empty.)
+* Create a blank DB for Drupal (Drupal's initialization process expects it to already exist and be empty.)
 
 ```bash
 az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
@@ -176,7 +176,7 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
 
 ### Create the container app
 
-1. Define the container app name.
+* Define the container app name.
 
 ```bash
 CONTAINER_APP_NAME="my-drupal-app"
@@ -196,7 +196,7 @@ chmod +x update-yaml.sh
 ./update-yaml.sh
 ```
 
-1. Create a container app.
+* Create a container app.
 
 ```bash
 az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
