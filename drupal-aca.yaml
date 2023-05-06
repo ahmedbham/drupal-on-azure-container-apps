@@ -1,6 +1,6 @@
 location: eastus
 name: mycontainerapp
-resourceGroup: myresourcegroup
+resourceGroup: demo
 type: Microsoft.App/containerApps
 properties:
   managedEnvironmentId: /subscriptions/mysubscription/resourceGroups/myresourcegroup/providers/Microsoft.App/managedEnvironments/myenvironment
@@ -25,15 +25,15 @@ properties:
         name: drupal
         env:
         - name: DRUPAL_DATABASE_NAME
-          value: bitnami_drupal
+          value: DRUPAL_DB_NAME
         - name: DRUPAL_DATABASE_PASSWORD
-          value: Allahis1!
+          value: DRUPAL_DB_PASSWORD
         - name: DRUPAL_DATABASE_USER
           value: myAdmin
         - name: DRUPAL_DATABASE_PORT_NUMBER
           value: '3306'
         - name: DRUPAL_DATABASE_HOST
-          value: drupal-db-ahmedbham.mariadb.database.azure.com
+          value: DRUPAL_DB_HOST
         resources:
           cpu: 2
           ephemeralStorage: 8Gi

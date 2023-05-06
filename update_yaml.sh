@@ -1,0 +1,1 @@
+sed -i -e "s/RESOURCE_GROUP/$RESOURCE_GROUP/g" -e "s/DRUPAL_DB_USER/$DRUPAL_DB_USER/g" drupal-aca.yaml
