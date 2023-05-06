@@ -1,5 +1,9 @@
 # drupal-on-azure-container-apps
 
+### Prerequisites
+
+Install the latest version of the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
+
 ### Set up the environment
 
 1. Sign in to the Azure CLI.
@@ -61,6 +65,8 @@ export ENVIRONMENT_ID=$(az containerapp env show \
   --resource-group $RESOURCE_GROUP \
   --query "id" \
   --output tsv)
+
+echo $ENVIRONMENT_ID
 ```
 
 ### Set up a storage account
@@ -68,8 +74,10 @@ export ENVIRONMENT_ID=$(az containerapp env show \
 1. Define a storage account name.
 
 ```bash
-RANDOM==$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10 ; echo '')
-STORAGE_ACCOUNT_NAME="mydrupalstorageaccount$RANDOM"
+RAND=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10 ; echo '')
+STORAGE_ACCOUNT_NAME="mydrupalstorage$RAND"
+
+echo "Storage account name is" $STORAGE_ACCOUNT_NAME
 ```
 
 1. Create an Azure Storage account.
@@ -111,7 +119,7 @@ STORAGE_ACCOUNT_KEY=$(az storage account keys list \
 1. Define the storage mount name.
 
 ```bash
-STORAGE_MOUNT_NAME="mydrupalstoragemount"
+export STORAGE_MOUNT_NAME="mydrupalstoragemount"
 ```
 
 1. Create a storage mount.
@@ -133,18 +141,17 @@ az containerapp env storage set \
 1. Drupal DB Settings
 
 ```bash
-export DB_SERVER_NAME=drupal-db-srv-$RANDOM  # Must be globally unique, ie: 'drupal-db-srv-<unique>'
+export DB_SERVER_NAME=drupal-db-srv-$RAND  # Must be globally unique, ie: 'drupal-db-srv-<unique>'
 export DRUPAL_DB_HOST=$DB_SERVER_NAME.mariadb.database.azure.com
 export DB_SERVER_SKU=GP_Gen5_2 # Azure Database for MariaDB SKU
 export DRUPAL_DB_USER=myAdmin  # Cannot be 'admin'.
-export DRUPAL_DB_PASSWORD=Zx3$RANDOM # Must include uppercase, lowercase, and numeric
+export DRUPAL_DB_PASSWORD=Zx3$RAND # Must include uppercase, lowercase, and numeric
 export DRUPAL_DB_NAME=drupal_db
 ```
 
 1. Create a MariaDB Server
 
 ```bash
-echo "Creating Azure Database for MariaDB server '$DB_SERVER_NAME'."
 az mariadb server create --name $DB_SERVER_NAME \
     --location $LOCATION --resource-group $RESOURCE_GROUP \
     --sku-name $DB_SERVER_SKU --ssl-enforcement Disabled \
@@ -155,7 +162,6 @@ az mariadb server create --name $DB_SERVER_NAME \
 1. Enable Azure services (ie: Web App) to connect to the server.
 
 ```bash
-echo "Configuring firewall on '$DB_SERVER_NAME' to allow access from Azure Services"
 az mariadb server firewall-rule create --name AllowAllWindowsAzureIps \
     --resource-group $RESOURCE_GROUP --server-name $DB_SERVER_NAME \
     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0 --output none
@@ -164,7 +170,6 @@ az mariadb server firewall-rule create --name AllowAllWindowsAzureIps \
 1. Create a blank DB for Drupal (Drupal's initialization process expects it to already exist and be empty.)
 
 ```bash
-echo "Creating database '$DRUPAL_DB_NAME' on server '$DB_SERVER_NAME'."
 az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
     --resource-group $RESOURCE_GROUP --output none
 ```
@@ -177,10 +182,24 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
 CONTAINER_APP_NAME="my-drupal-app"
 ```
 
+* Update container app yaml file with the following values:
+    * `environmentId` - The environment ID from the previous step.
+    * `storageMountName` - The storage mount name from the previous step.
+    * `storageMountPath` - The path to the storage mount. This is the path that Drupal will use to store files.
+    * `drupalDbHost` - The MariaDB server host name from the previous step.
+    * `drupalDbUser` - The MariaDB server user name from the previous step.
+    * `drupalDbPassword` - The MariaDB server password from the previous step.
+    * `drupalDbName` - The MariaDB server database name from the previous step.
+
+```bash
+chmod +x update-yaml.sh
+./update-yaml.sh
+```
+
 1. Create a container app.
 
 ```bash
 az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
     --environment $ENVIRONMENT_NAME \
-    --yaml container.yaml
+    --yaml drupal-aca-updated.yaml
 ```

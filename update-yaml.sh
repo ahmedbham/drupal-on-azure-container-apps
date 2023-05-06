@@ -1,8 +1,8 @@
-sed -e "s/RESOURCE_GROUP/$RESOURCE_GROUP/g" \
+cat drupal-aca.yaml | sed -e "s/RESOURCE_GROUP/$RESOURCE_GROUP/g" \
 -e "s/DRUPAL_DB_USER/$DRUPAL_DB_USER/g" \
 -e "s/DRUPAL_DB_PASSWORD/$DRUPAL_DB_PASSWORD/g" \
 -e "s/DRUPAL_DB_NAME/$DRUPAL_DB_NAME/g" \
 -e "s/DRUPAL_DB_HOST/$DRUPAL_DB_HOST/g" \
 -e "s/STORAGE_MOUNT_NAME/$STORAGE_MOUNT_NAME/g" \
--e "s/ENVIRONMENT_ID/$ENVIRONMENT_ID/g" \
-drupal-aca.yaml
+-e "s|ENVIRONMENT_ID|$ENVIRONMENT_ID|g" \
+> drupal-aca-updated.yaml
