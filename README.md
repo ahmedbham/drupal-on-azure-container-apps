@@ -55,6 +55,14 @@ az containerapp env create \
   --query "properties.provisioningState"
 ```
 
+```bash
+export ENVIRONMENT_ID=$(az containerapp env show \
+  --name $ENVIRONMENT_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --query "id" \
+  --output tsv)
+```
+
 ### Set up a storage account
 
 1. Define a storage account name.

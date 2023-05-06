@@ -3,7 +3,7 @@ name: mycontainerapp
 resourceGroup: demo
 type: Microsoft.App/containerApps
 properties:
-  managedEnvironmentId: /subscriptions/mysubscription/resourceGroups/myresourcegroup/providers/Microsoft.App/managedEnvironments/myenvironment
+  managedEnvironmentId: ENVIRONMENT_ID
   configuration:
     activeRevisionsMode: Single
     dapr: null
@@ -43,7 +43,7 @@ properties:
           volumeName: mystoragemount
     volumes:
     - name: mystoragemount
-      storageName: mystoragemount
+      storageName: STORAGE_MOUNT_NAME
       storageType: AzureFile
     scale:
       minReplicas: 1
