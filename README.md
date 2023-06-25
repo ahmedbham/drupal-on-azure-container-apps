@@ -1,4 +1,16 @@
-# drupal-on-azure-container-apps
+# Deploy Drupal on Azure Container Apps
+
+Drupal is an open-source content management framework written in the PHP server-side scripting language. Drupal provides a backend framework for many enterprise websites, with standard features such as content authoring, reliable performance, and robust security.
+
+The two code sets used by every Drupal site: the codebase and the database. The codebase is the set of files that make up Drupal itself, along with any themes, modules, or libraries you've added. The database is where Drupal stores most of its configuration and all of its content.
+
+## Solution Architecture
+
+![Solution Architecture](./images/solution-architecture.png)
+
+- **Azure Container Apps** for hosting Drupal application
+- **Azure Database for MariaDB** for hosting Drupal database
+- **Azure File Share** for hosting Drupal files
 
 ### Prerequisites
 
@@ -6,7 +18,7 @@ Install the latest version of the [Azure CLI](https://docs.microsoft.com/en-us/c
 
 ### Set up the environment
 
-* Sign in to the Azure CLI.
+- Sign in to the Azure CLI.
 
 ```bash
 az login
@@ -71,7 +83,7 @@ echo $ENVIRONMENT_ID
 
 ### Set up a storage account
 
-* Define a storage account name.
+* Define a storage account name (must be globally unique).
 
 ```bash
 RAND=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10 ; echo '')
@@ -175,6 +187,8 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
 ```
 
 ### Create the container app
+
+We will use a yaml template file `drupal-aca.yaml` to create the container app. The yaml file has placeholder values that we will update with the values we created in the previous steps.
 
 * Define the container app name.
 
