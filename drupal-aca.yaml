@@ -1,6 +1,6 @@
-location: eastus
-name: mycontainerapp
-resourceGroup: demo
+location: LOCATION
+name: CONTAINER_APP_NAME
+resourceGroup: RESOURCE_GROUP
 type: Microsoft.App/containerApps
 properties:
   managedEnvironmentId: ENVIRONMENT_ID
@@ -29,7 +29,7 @@ properties:
         - name: DRUPAL_DATABASE_PASSWORD
           value: DRUPAL_DB_PASSWORD
         - name: DRUPAL_DATABASE_USER
-          value: myAdmin
+          value: DRUPAL_DB_USER
         - name: DRUPAL_DATABASE_PORT_NUMBER
           value: '3306'
         - name: DRUPAL_DATABASE_HOST
@@ -46,5 +46,5 @@ properties:
       storageName: STORAGE_MOUNT_NAME
       storageType: AzureFile
     scale:
-      minReplicas: 1
-      maxReplicas: 1
+      minReplicas: MIN_REPLICAS
+      maxReplicas: MAX_REPLICAS

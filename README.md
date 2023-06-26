@@ -8,15 +8,13 @@ The two code sets used by every Drupal site: the codebase and the database. The 
 
 ![Solution Architecture](./images/solution-architecture.png)
 
-- **Azure Container Apps** for hosting Drupal application
+- **Azure Container Apps (ACA)** for hosting Drupal application
 - **Azure Database for MariaDB** for hosting Drupal database
 - **Azure File Share** for hosting Drupal files
 
-### Prerequisites
+## Prerequisites
 
 Install the latest version of the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
-
-### Set up the environment
 
 - Sign in to the Azure CLI.
 
@@ -24,7 +22,7 @@ Install the latest version of the [Azure CLI](https://docs.microsoft.com/en-us/c
 az login
 ```
 
-* Set up environment variables used in various commands to follow.
+* Set up environment variables used in various commands to follow (change according to your preference).
 
 ```bash
 export RESOURCE_GROUP="my-drupal-apps-group"
@@ -50,8 +48,6 @@ az provider register -n Microsoft.App
 az provider register -n Microsoft.OperationalInsights
 ```
 
-### Create a Container Apps environment
-
 * Create a resource group.
 
 ```bash
@@ -61,7 +57,9 @@ az group create \
   --query "properties.provisioningState"
 ```
 
-* Create a Container Apps environment.
+### Create ACA Environment
+
+* Create ACA environment.
 
 ```bash
 az containerapp env create \
@@ -86,8 +84,8 @@ echo $ENVIRONMENT_ID
 * Define a storage account name (must be globally unique).
 
 ```bash
-RAND=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10 ; echo '')
-STORAGE_ACCOUNT_NAME="mydrupalstorage$RAND"
+RAND=$(head /dev/urandom | tr -dc a-z0-9 | head -c10 ; echo '')
+STORAGE_ACCOUNT_NAME="druplaca$RAND"
 
 echo "Storage account name is" $STORAGE_ACCOUNT_NAME
 ```
@@ -126,6 +124,8 @@ STORAGE_ACCOUNT_KEY=$(az storage account keys list \
   --account-name $STORAGE_ACCOUNT_NAME \
   --query "[0].value" \
   --output tsv)
+
+echo "Storage Account Key is $STORAGE_ACCOUNT_KEY"
 ```
 
 * Define the storage mount name.
@@ -188,15 +188,13 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
 
 ### Create the container app
 
-We will use a yaml template file `drupal-aca.yaml` to create the container app. The yaml file has placeholder values that we will update with the values we created in the previous steps.
-
-* Define the container app name.
+* Define Azure Container App name.
 
 ```bash
-CONTAINER_APP_NAME="my-drupal-app"
+export CONTAINER_APP_NAME="my-drupal-app"
 ```
 
-* Update container app yaml file with the following values:
+* We will use a yaml template file `drupal-aca.yaml` to create the container app. This file has placeholders for following fields that will be set by executing `update-yaml.sh` script file.
     * `environmentId` - The environment ID from the previous step.
     * `storageMountName` - The storage mount name from the previous step.
     * `storageMountPath` - The path to the storage mount. This is the path that Drupal will use to store files.
@@ -204,6 +202,8 @@ CONTAINER_APP_NAME="my-drupal-app"
     * `drupalDbUser` - The MariaDB server user name from the previous step.
     * `drupalDbPassword` - The MariaDB server password from the previous step.
     * `drupalDbName` - The MariaDB server database name from the previous step.
+    * `minReplicas` - The minimum number of replicas for the container app.
+    * `maxReplicas` - The maximum number of replicas for the container app.
 
 ```bash
 chmod +x update-yaml.sh
@@ -215,5 +215,10 @@ chmod +x update-yaml.sh
 ```bash
 az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
     --environment $ENVIRONMENT_NAME \
-    --yaml drupal-aca-updated.yaml
+    --yaml drupal-aca-updated.yaml \
+    --query properties.configuration.ingress.fqdn
 ```
+
+### Accessing Drupal site
+
+The last command will return the FQDN of the container app. You can access the Drupal site by navigating to the FQDN in a browser. Click on the `Log in` link in the top right corner of the page. The default username is `user` and the password is `bitnami`.
