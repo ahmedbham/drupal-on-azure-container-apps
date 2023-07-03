@@ -205,6 +205,12 @@ export CONTAINER_APP_NAME="my-drupal-app"
     * `minReplicas` - The minimum number of replicas for the container app.
     * `maxReplicas` - The maximum number of replicas for the container app.
 
+* ACA allows you to create secrets that can be used in the yaml template file. We will create secrets for the following environment variables that are used in the yaml template file.
+    * `DRUPAL_DB_HOST`
+    * `DRUPAL_DB_USER`
+    * `DRUPAL_DB_PASSWORD`
+    * `DRUPAL_DB_NAME`
+
 ```bash
 chmod +x update-yaml.sh
 ./update-yaml.sh

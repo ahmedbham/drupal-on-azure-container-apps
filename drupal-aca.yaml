@@ -16,7 +16,16 @@ properties:
           weight: 100
       transport: Auto
     registries: null
-    secrets: null
+    secrets:
+      - name: drupal-db-name
+        value: DRUPAL_DB_NAME
+      - name: drupal-db-password
+        value: DRUPAL_DB_PASSWORD
+      - name: drupal-db-user
+        value: DRUPAL_DB_USER
+      - name: drupal-db-host
+        value: DRUPAL_DB_HOST
+
     service: null
   template:
     revisionSuffix: ''
@@ -25,15 +34,15 @@ properties:
         name: drupal
         env:
         - name: DRUPAL_DATABASE_NAME
-          value: DRUPAL_DB_NAME
+          secretRef: drupal-db-name
         - name: DRUPAL_DATABASE_PASSWORD
-          value: DRUPAL_DB_PASSWORD
+          secretRef: drupal-db-password
         - name: DRUPAL_DATABASE_USER
-          value: DRUPAL_DB_USER
+          secretRef: drupal-db-user
         - name: DRUPAL_DATABASE_PORT_NUMBER
           value: '3306'
         - name: DRUPAL_DATABASE_HOST
-          value: DRUPAL_DB_HOST
+          secretRef: drupal-db-host
         resources:
           cpu: 2
           ephemeralStorage: 8Gi
