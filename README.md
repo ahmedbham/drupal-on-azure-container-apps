@@ -12,7 +12,7 @@ The two code sets used by every Drupal site: the codebase and the database. The 
 - **Azure Database for MariaDB** for hosting Drupal database
 - **Azure File Share** for hosting Drupal files
 
-## Prerequisites
+## Setup
 
 Install the latest version of the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
 
@@ -57,7 +57,7 @@ az group create \
   --query "properties.provisioningState"
 ```
 
-### Create ACA Environment
+## Create ACA Environment
 
 * Create ACA environment.
 
@@ -79,7 +79,7 @@ export ENVIRONMENT_ID=$(az containerapp env show \
 echo $ENVIRONMENT_ID
 ```
 
-### Set up a storage account
+## Set up a storage account
 
 * Define a storage account name (must be globally unique).
 
@@ -148,7 +148,7 @@ az containerapp env storage set \
   --output table
 ```
 
-### Create “Azure Database for MariaDB Servers” and a database instance
+## Create “Azure Database for MariaDB Servers” and a database instance
 
 * Drupal DB Settings
 
@@ -186,7 +186,7 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
     --resource-group $RESOURCE_GROUP --output none
 ```
 
-### Create the container app
+## Create the container app
 
 * Define Azure Container App name.
 
@@ -225,6 +225,6 @@ az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
     --query properties.configuration.ingress.fqdn
 ```
 
-### Accessing Drupal site
+## Accessing Drupal site
 
 The last command will return the FQDN of the container app. You can access the Drupal site by navigating to the FQDN in a browser. Click on the `Log in` link in the top right corner of the page. The default username is `user` and the password is `bitnami`.
