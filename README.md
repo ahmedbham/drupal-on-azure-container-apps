@@ -6,7 +6,7 @@ The two code sets used by every Drupal site: the codebase and the database. The 
 
 ## Solution Architecture
 
-![Solution Architecture](./images/solution-architecture.png)
+![Solution Architecture](/solution-architecture.png)
 
 - **Azure Container Apps (ACA)** for hosting Drupal application
 - **Azure Database for MariaDB** for hosting Drupal database
