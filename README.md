@@ -194,16 +194,19 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
 export CONTAINER_APP_NAME="my-drupal-app"
 ```
 
-* We will use a yaml template file `drupal-aca.yaml` to create the container app. This file has placeholders for following fields that will be set by executing `update-yaml.sh` script file.
-    * `environmentId` - The environment ID from the previous step.
-    * `storageMountName` - The storage mount name from the previous step.
-    * `storageMountPath` - The path to the storage mount. This is the path that Drupal will use to store files.
-    * `drupalDbHost` - The MariaDB server host name from the previous step.
-    * `drupalDbUser` - The MariaDB server user name from the previous step.
-    * `drupalDbPassword` - The MariaDB server password from the previous step.
-    * `drupalDbName` - The MariaDB server database name from the previous step.
-    * `minReplicas` - The minimum number of replicas for the container app.
-    * `maxReplicas` - The maximum number of replicas for the container app.
+* We will use a yaml configuration file `drupal-aca.yaml` to define container app. This file has placeholders for following fields that will be set by executing `update-yaml.sh` script file.
+
+| Key | Placeholder | Description |
+|-|-|-|
+| `environmentId` | `ENVIRONMENT_ID` | The environment ID from the previous step. |
+| `storageMountName` | `STORAGE_MOUNT_NAME` | The storage mount name from the previous step. |
+| `storageMountPath` | `STORAGE_MOUNT_PATH` | The path to the storage mount. This is the path that Drupal will use to store files. |
+| `drupalDbHost` | `DRUPAL_DB_HOST` | The MariaDB server host name from the previous step. |
+| `drupalDbUser` | `DRUPAL_DB_USER` | The MariaDB server user name from the previous step. |
+| `drupalDbPassword` | `DRUPAL_DB_PASSWORD` | The MariaDB server password from the previous step. |
+| `drupalDbName` | `DRUPAL_DB_NAME` | The MariaDB server database name from the previous step. |
+| `minReplicas` | `MIN_REPLICAS` | The minimum number of replicas for the container app. |
+| `maxReplicas` | `MAX_REPLICAS` | The maximum number of replicas for the container app. |
 
 * ACA allows you to create secrets that can be used in the yaml template file. We will create secrets for the following environment variables that are used in the yaml template file.
     * `DRUPAL_DB_HOST`
@@ -216,15 +219,23 @@ chmod +x update-yaml.sh
 ./update-yaml.sh
 ```
 
+Executing the above script will create a new yaml file `drupal-aca-DoNotCheckIn.yaml` with the updated values. Make sure not to check in this file to source control.
+
 * Create a container app.
 
 ```bash
 az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
     --environment $ENVIRONMENT_NAME \
-    --yaml drupal-aca-updated.yaml \
+    --yaml drupal-aca-DoNotCheckIn.yaml \
     --query properties.configuration.ingress.fqdn
 ```
 
 ## Accessing Drupal site
 
 The last command will return the FQDN of the container app. You can access the Drupal site by navigating to the FQDN in a browser. Click on the `Log in` link in the top right corner of the page. The default username is `user` and the password is `bitnami`.
+
+## Clean up resources
+
+```bash
+az group delete --name $RESOURCE_GROUP --yes --no-wait
+```

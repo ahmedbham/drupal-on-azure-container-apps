@@ -9,4 +9,4 @@ cat drupal-aca.yaml | sed -e "s/RESOURCE_GROUP/$RESOURCE_GROUP/g" \
 -e "s|ENVIRONMENT_ID|$ENVIRONMENT_ID|g" \
 -e "s|MIN_REPLICAS|$MIN_REPLICAS|g" \
 -e "s|MAX_REPLICAS|$MAX_REPLICAS|g" \
-> drupal-aca-updated.yaml
+> drupal-aca-DoNotCheckIn.yaml
