@@ -2,15 +2,13 @@
 
 Drupal is an open-source content management framework written in the PHP server-side scripting language. Drupal provides a backend framework for many enterprise websites, with standard features such as content authoring, reliable performance, and robust security.
 
-The two code sets used by every Drupal site: the codebase and the database. The codebase is the set of files that make up Drupal itself, along with any themes, modules, or libraries you've added. The database is where Drupal stores most of its configuration and all of its content.
-
-## Solution Architecture
-
-![Solution Architecture](/solution-architecture.png)
+The two code sets used by every Drupal site: the codebase and the database. The codebase is the set of files that make up Drupal itself, along with any themes, modules, or libraries you've added. The database is where Drupal stores most of its configuration and all of its content. These infrastructure requirements are satisfied by the follwoing Azure services
 
 - **Azure Container Apps (ACA)** for hosting Drupal application
 - **Azure Database for MariaDB** for hosting Drupal database
 - **Azure File Share** for hosting Drupal files
+
+![Solution Architecture](/solution-architecture.png)
 
 ## Setup
 
