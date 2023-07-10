@@ -237,7 +237,13 @@ az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
 
 ## Access Drupal Site
 
-The last command will return the FQDN of the container app. You can access the Drupal site by navigating to the FQDN in a browser. Click on the `Log in` link in the top right corner of the page. The default username is `user` and the password is `bitnami`.
+The last command will return the FQDN of the container app. You can access the Drupal site by navigating to the FQDN in a browser. 
+
+![Drupal Welcome Page](/drupal-welcome-page.png)
+
+Click on the `Log in` link in the top right corner of the page. The default username is `user` and the password is `bitnami`.
+
+![Drupal Logged In Page](/drupal-logged-in-page.png)
 
 ## Clean Up Resources
 
