@@ -4,9 +4,9 @@ Drupal is an open-source content management framework written in the PHP server-
 
 The two code sets used by every Drupal site: the codebase and the database. The codebase is the set of files that make up Drupal itself, along with any themes, modules, or libraries you've added. The database is where Drupal stores most of its configuration and all of its content. These infrastructure requirements are satisfied by the follwoing Azure services
 
-- **Azure Container Apps (ACA)** for hosting Drupal application
-- **Azure Database for MariaDB** for hosting Drupal database
-- **Azure File Share** for hosting Drupal files
+- [Azure Container Apps (ACA)](https://learn.microsoft.com/en-us/azure/container-apps/overview) for hosting Drupal application
+- [Azure Database for MariaDB](https://learn.microsoft.com/en-us/azure/mariadb/overview) for hosting Drupal database
+- [Azure Files](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction) for hosting Drupal files
 
 ![Solution Architecture](/solution-architecture.png)
 
@@ -146,7 +146,7 @@ az containerapp env storage set \
   --output table
 ```
 
-## Create Azure Database for MariaDB Server
+## Create Azure Database for MariaDB
 
 * Drupal DB Settings
 
