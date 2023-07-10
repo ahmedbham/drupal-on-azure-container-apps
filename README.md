@@ -192,7 +192,7 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
 export CONTAINER_APP_NAME="my-drupal-app"
 ```
 
-* We will use a yaml configuration file ![drupal-aca.yaml[(/drupal-aca.yaml) to define container app. This file has placeholders for following fields that will be set by executing ![update-yaml.sh](/update-yaml.sh) script file.
+* We will use a yaml configuration file ![drupal-aca.yaml](/drupal-aca.yaml) to define container app. This file has placeholders for following fields that will be set by executing ![update-yaml.sh](/update-yaml.sh) script file.
 
 | Key | Placeholder | Description |
 |-|-|-|
