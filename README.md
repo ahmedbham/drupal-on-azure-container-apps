@@ -212,7 +212,7 @@ export CONTAINER_APP_NAME="my-drupal-app"
     * `DRUPAL_DB_PASSWORD`
     * `DRUPAL_DB_NAME`
 
-* ACA allows you to expose your container app to the public web, via an [Externally Ingress](https://learn.microsoft.com/en-us/azure/container-apps/ingress-overview).  When you enable ingress, you don't need to create an Azure Load Balancer, public IP address, or any other Azure resources to enable incoming HTTP requests or TCP traffic.
+* ACA allows you to expose your container app to the public web, via an [External Ingress](https://learn.microsoft.com/en-us/azure/container-apps/ingress-overview).  When you enable ingress, you don't need to create an Azure Load Balancer, public IP address, or any other Azure resources to enable incoming HTTP requests or TCP traffic.
 
 ```yaml
 ingress:
