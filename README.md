@@ -77,7 +77,7 @@ export ENVIRONMENT_ID=$(az containerapp env show \
 echo $ENVIRONMENT_ID
 ```
 
-## Set up a storage account
+## Set Up Azure Storage Account
 
 * Define a storage account name (must be globally unique).
 
@@ -146,7 +146,7 @@ az containerapp env storage set \
   --output table
 ```
 
-## Create “Azure Database for MariaDB Servers” and a database instance
+## Create Azure Database for MariaDB Server
 
 * Drupal DB Settings
 
@@ -184,7 +184,7 @@ az mariadb db create --name $DRUPAL_DB_NAME --server-name $DB_SERVER_NAME \
     --resource-group $RESOURCE_GROUP --output none
 ```
 
-## Create the container app
+## Create Azure Container App
 
 * Define Azure Container App name.
 
@@ -228,11 +228,11 @@ az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
     --query properties.configuration.ingress.fqdn
 ```
 
-## Accessing Drupal site
+## Access Drupal Site
 
 The last command will return the FQDN of the container app. You can access the Drupal site by navigating to the FQDN in a browser. Click on the `Log in` link in the top right corner of the page. The default username is `user` and the password is `bitnami`.
 
-## Clean up resources
+## Clean Up Resources
 
 ```bash
 az group delete --name $RESOURCE_GROUP --yes --no-wait
