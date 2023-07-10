@@ -206,20 +206,27 @@ export CONTAINER_APP_NAME="my-drupal-app"
 | `minReplicas` | `MIN_REPLICAS` | The minimum number of replicas for the container app. |
 | `maxReplicas` | `MAX_REPLICAS` | The maximum number of replicas for the container app. |
 
-* ACA allows you to create secrets that can be used in the yaml template file. We will create secrets for the following environment variables that are used in the yaml template file.
+* ACA allows you to create secrets that can be used in the yaml configuration file. We will create secrets for the following environment variables that are used in the yaml template file.
     * `DRUPAL_DB_HOST`
     * `DRUPAL_DB_USER`
     * `DRUPAL_DB_PASSWORD`
     * `DRUPAL_DB_NAME`
+
+* ACA allows you to expose your container app to the public web, via an [Externally Ingress](https://learn.microsoft.com/en-us/azure/container-apps/ingress-overview).  When you enable ingress, you don't need to create an Azure Load Balancer, public IP address, or any other Azure resources to enable incoming HTTP requests or TCP traffic.
+
+```yaml
+ingress:
+  external: true
+```
+
+* Execute the bash script to create a new yaml file `drupal-aca-DoNotCheckIn.yaml` with the updated values. Make sure not to check in this file to source control.
 
 ```bash
 chmod +x update-yaml.sh
 ./update-yaml.sh
 ```
 
-Executing the above script will create a new yaml file `drupal-aca-DoNotCheckIn.yaml` with the updated values. Make sure not to check in this file to source control.
-
-* Create a container app.
+* Now we are ready to create a Container App to host Drupal.
 
 ```bash
 az containerapp create -n $CONTAINER_APP_NAME -g $RESOURCE_GROUP \
